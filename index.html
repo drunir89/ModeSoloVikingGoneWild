@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vikings Gone Wild - Édition Moderne</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 20%, #2b5a7a, #0a1e2f);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(18, 30, 41, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 32px;
+            padding: 28px;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 215, 0, 0.2) inset;
+            color: #f0f4fa;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        /* En-tête viking */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.4);
+        }
+
+        .title-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .viking-helmet {
+            font-size: 3rem;
+            filter: drop-shadow(0 0 8px #ffd700);
+        }
+
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffd700, #f9a825);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .subtitle {
+            color: #b0e0e6;
+            font-size: 1rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* Tour info moderne */
+        .turn-info-modern {
+            background: rgba(10, 25, 35, 0.7);
+            border-radius: 60px;
+            padding: 12px 24px;
+            display: flex;
+            gap: 30px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .turn-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .turn-label {
+            color: #b0e0e6;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .turn-value {
+            background: rgba(255, 215, 0, 0.15);
+            padding: 5px 15px;
+            border-radius: 40px;
+            font-weight: bold;
+            color: #ffd700;
+            font-size: 1.3rem;
+            border: 1px solid rgba(255, 215, 0, 0.4);
+        }
+
+        .game-status-badge {
+            background: linear-gradient(145deg, #2a5f3a, #1d4a2a);
+            padding: 5px 20px;
+            border-radius: 40px;
+            color: #a5d6a5;
+            font-weight: 500;
+            border: 1px solid #6fbf6f;
+            box-shadow: 0 0 10px #6fbf6f;
+        }
+
+        /* Players Grid - design carte moderne */
+        .players-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .player-card {
+            background: rgba(20, 35, 45, 0.8);
+            border-radius: 24px;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+            border: 1px solid;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .player-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, transparent, currentColor, transparent);
+        }
+
+        .player-card.active {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .card-vert { border-color: #4caf50; color: #a5d6a5; }
+        .card-bleu { border-color: #2196f3; color: #90caf9; }
+        .card-rouge { border-color: #f44336; color: #ffab91; }
+
+        .player-header-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .player-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            border: 2px solid currentColor;
+        }
+
+        .player-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .personality-chip {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            border: 1px solid currentColor;
+            margin-left: 8px;
+        }
+
+        .score-modern {
+            font-size: 2.8rem;
+            font-weight: 700;
+            text-align: center;
+            color: #ffd700;
+            text-shadow: 0 0 15px #ffd700;
+            line-height: 1;
+            margin: 15px 0;
+        }
+
+        /* Ressources en barres */
+        .resources-modern {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .resource-bar {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            padding: 8px;
+            text-align: center;
+            border: 1px solid;
+        }
+
+        .gold-bar { border-color: #ffd700; }
+        .beer-bar { border-color: #cd7f32; }
+
+        .resource-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+
+        .resource-fill {
+            height: 8px;
+            background: currentColor;
+            border-radius: 10px;
+            margin: 5px 0;
+            transition: width 0.3s;
+        }
+
+        .gold-fill { background: #ffd700; box-shadow: 0 0 10px #ffd700; }
+        .beer-fill { background: #cd7f32; box-shadow: 0 0 10px #cd7f32; }
+
+        .resource-value-modern {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* Carte événement super moderne */
+        .event-card-modern {
+            background: linear-gradient(145deg, #1e3b4a, #122b36);
+            border-radius: 28px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 2px solid;
+            border-image: linear-gradient(45deg, #ffd700, #b8860b) 1;
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 215, 0, 0.2);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .event-icon-large {
+            font-size: 4rem;
+            background: rgba(255, 215, 0, 0.1);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            border: 3px solid #ffd700;
+            box-shadow: 0 0 30px #ffd700;
+        }
+
+        .event-name-modern {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .event-effect-modern {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 16px;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            border-left: 5px solid #ffd700;
+            width: 100%;
+            text-align: left;
+            backdrop-filter: blur(4px);
+        }
+
+        .event-badge {
+            position: absolute;
+            top: -10px;
+            left: 30px;
+            background: #ffd700;
+            color: #0a1e2f;
+            padding: 5px 15px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Boutons modernes */
+        .button-group-modern {
+            display: flex;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .btn-modern {
+            padding: 16px 28px;
+            border: none;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 200px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-gold {
+            background: linear-gradient(145deg, #ffd700, #edb800);
+            color: #1a2a3a;
+        }
+
+        .btn-gold:hover {
+            background: linear-gradient(145deg, #ffe135, #ffd700);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-blue {
+            background: linear-gradient(145deg, #2b7a9c, #1e5f7a);
+            color: white;
+        }
+
+        .btn-blue:hover {
+            background: linear-gradient(145deg, #3595c0, #2b7a9c);
+            transform: translateY(-3px);
+        }
+
+        .btn-red {
+            background: linear-gradient(145deg, #b04a4a, #8e3a3a);
+            color: white;
+        }
+
+        .btn-red:hover {
+            background: linear-gradient(145deg, #c55a5a, #b04a4a);
+            transform: translateY(-3px);
+        }
+
+        .btn-micro-modern {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            padding: 6px 12px;
+            border-radius: 30px;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .btn-micro-modern:hover {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+        }
+
+        /* Historique en timeline */
+        .timeline {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 15px;
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(255, 215, 0, 0.2);
+        }
+
+        .timeline-turn {
+            background: #ffd700;
+            color: #0a1e2f;
+            padding: 2px 12px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        /* Options avancées */
+        .advanced-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 25px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .config-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .config-item label {
+            color: #b0e0e6;
+            font-size: 0.9rem;
+        }
+
+        .config-item select, .config-item input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 30px;
+            padding: 10px 15px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        /* Messages */
+        .victory-message-modern {
+            background: linear-gradient(145deg, #2a5f3a, #1d4a2a);
+            border: 2px solid #6fbf6f;
+            border-radius: 40px;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #d4ffd4;
+            margin: 20px 0;
+            box-shadow: 0 0 30px #6fbf6f;
+        }
+
+        .defeat-message-modern {
+            background: linear-gradient(145deg, #5f2a2a, #4a1d1d);
+            border: 2px solid #bf6f6f;
+            border-radius: 40px;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffd4d4;
+            margin: 20px 0;
+            box-shadow: 0 0 30px #bf6f6f;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #8a9aa8;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes cardGlow {
+            0% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.7); }
+            100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+        }
+
+        .event-card-modern {
+            animation: cardGlow 3s infinite;
+        }
+/* Améliorations responsive supplémentaires */
+@media screen and (max-width: 768px) {
+    .players-grid {
+        grid-template-columns: 1fr; /* Une seule colonne sur mobile */
+        gap: 15px;
+    }
+    
+    .button-group-modern {
+        flex-direction: column;
+    }
+    
+    .btn-modern {
+        width: 100%;
+    }
+    
+    .turn-info-modern {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .event-name-modern {
+        font-size: 1.8rem;
+    }
+    
+    .config-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .title-section {
+        justify-content: center;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .event-icon-large {
+        width: 70px;
+        height: 70px;
+        font-size: 2.5rem;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header moderne -->
+        <div class="header">
+            <div class="title-section">
+                <span class="viking-helmet">⚔️🛡️</span>
+                <div>
+                    <h1>VALHALLA RISING</h1>
+                    <div class="subtitle">Mode solo · La quête du Clan d'Ymir</div>
+                </div>
+            </div>
+            <div class="turn-info-modern">
+                <div class="turn-item">
+                    <span class="turn-label">Tour</span>
+                    <span class="turn-value" id="currentTurn">1</span>
+                </div>
+                <div class="turn-item">
+                    <span class="turn-label">Max</span>
+                    <span class="turn-value" id="maxTurns">8</span>
+                </div>
+                <div class="game-status-badge" id="gameStatus">⚡ En cours</div>
+            </div>
+        </div>
+
+        <!-- Players Cards -->
+        <div class="players-grid" id="playersGrid">
+            <!-- Joueur -->
+            <div class="player-card card-vert active" id="panelPlayer">
+                <div class="player-header-card">
+                    <div class="player-avatar">🗡️</div>
+                    <div>
+                        <span class="player-name">VOUS</span>
+                    </div>
+                </div>
+                <div class="score-modern" id="playerScore">0</div>
+                
+                <div class="resources-modern">
+                    <div class="resource-bar gold-bar">
+                        <div class="resource-header">
+                            <span>🪙</span>
+                            <span class="resource-value-modern" id="playerGold">0</span>
+                        </div>
+                        <div class="resource-fill gold-fill" id="playerGoldFill" style="width: 0%"></div>
+                        <div style="font-size:0.7rem;">/4</div>
+                    </div>
+                    <div class="resource-bar beer-bar">
+                        <div class="resource-header">
+                            <span>🍺</span>
+                            <span class="resource-value-modern" id="playerBeer">0</span>
+                        </div>
+                        <div class="resource-fill beer-fill" id="playerBeerFill" style="width: 0%"></div>
+                        <div style="font-size:0.7rem;">/4</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap:5px; justify-content: center; margin-top:10px;">
+                    <button class="btn-micro-modern" onclick="addResource('player', 'gold', 1)">+🪙</button>
+                    <button class="btn-micro-modern" onclick="addResource('player', 'gold', -1)">-🪙</button>
+                    <button class="btn-micro-modern" onclick="addResource('player', 'beer', 1)">+🍺</button>
+                    <button class="btn-micro-modern" onclick="addResource('player', 'beer', -1)">-🍺</button>
+                </div>
+            </div>
+
+            <!-- Ymir -->
+            <div class="player-card card-bleu" id="panelYmir">
+                <div class="player-header-card">
+                    <div class="player-avatar">👾</div>
+                    <div>
+                        <span class="player-name">YMIR</span>
+                        <span class="personality-chip" id="ymirPersonalityTag">agressif</span>
+                    </div>
+                </div>
+                <div class="score-modern" id="ymirScore">0</div>
+                
+                <div class="resources-modern">
+                    <div class="resource-bar gold-bar">
+                        <div class="resource-header">
+                            <span>🪙</span>
+                            <span class="resource-value-modern" id="ymirGold">0</span>
+                        </div>
+                        <div class="resource-fill gold-fill" id="ymirGoldFill" style="width: 0%"></div>
+                        <div style="font-size:0.7rem;">/4</div>
+                    </div>
+                    <div class="resource-bar beer-bar">
+                        <div class="resource-header">
+                            <span>🍺</span>
+                            <span class="resource-value-modern" id="ymirBeer">0</span>
+                        </div>
+                        <div class="resource-fill beer-fill" id="ymirBeerFill" style="width: 0%"></div>
+                        <div style="font-size:0.7rem;">/4</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap:5px; justify-content: center; margin-top:10px;">
+                    <button class="btn-micro-modern" onclick="addResource('ymir', 'gold', 1)">+🪙</button>
+                    <button class="btn-micro-modern" onclick="addResource('ymir', 'gold', -1)">-🪙</button>
+                    <button class="btn-micro-modern" onclick="addResource('ymir', 'beer', 1)">+🍺</button>
+                    <button class="btn-micro-modern" onclick="addResource('ymir', 'beer', -1)">-🍺</button>
+                </div>
+            </div>
+
+            <!-- Fenrir -->
+            <div class="player-card card-rouge" id="panelFenrir">
+                <div class="player-header-card">
+                    <div class="player-avatar">🐺</div>
+                    <div>
+                        <span class="player-name">FENRIR</span>
+                        <span class="personality-chip" id="fenrirPersonalityTag">défensif</span>
+                    </div>
+                </div>
+                <div class="score-modern" id="fenrirScore">0</div>
+                
+                <div class="resources-modern">
+                    <div class="resource-bar gold-bar">
+                        <div class="resource-header">
+                            <span>🪙</span>
+                            <span class="resource-value-modern" id="fenrirGold">0</span>
+                        </div>
+                        <div class="resource-fill gold-fill" id="fenrirGoldFill" style="width: 0%"></div>
+                        <div style="font-size:0.7rem;">/4</div>
+                    </div>
+                    <div class="resource-bar beer-bar">
+                        <div class="resource-header">
+                            <span>🍺</span>
+                            <span class="resource-value-modern" id="fenrirBeer">0</span>
+                        </div>
+                        <div class="resource-fill beer-fill" id="fenrirBeerFill" style="width: 0%"></div>
+                        <div style="font-size:0.7rem;">/4</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap:5px; justify-content: center; margin-top:10px;">
+                    <button class="btn-micro-modern" onclick="addResource('fenrir', 'gold', 1)">+🪙</button>
+                    <button class="btn-micro-modern" onclick="addResource('fenrir', 'gold', -1)">-🪙</button>
+                    <button class="btn-micro-modern" onclick="addResource('fenrir', 'beer', 1)">+🍺</button>
+                    <button class="btn-micro-modern" onclick="addResource('fenrir', 'beer', -1)">-🍺</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carte Événement -->
+        <div class="event-card-modern" id="eventCard">
+            <div class="event-badge">⚡ NOUVEL ÉVÉNEMENT</div>
+            <div class="event-icon-large" id="eventIcon">🎲</div>
+            <div class="event-name-modern" id="eventName">-</div>
+            <div class="event-effect-modern" id="eventEffect">
+                Cliquez sur "Piocher un événement"
+            </div>
+        </div>
+
+        <!-- Boutons principaux -->
+        <div class="button-group-modern">
+            <button class="btn-modern btn-gold" onclick="drawEvent()">
+                <span>🎲</span> Piocher un événement
+            </button>
+            <button class="btn-modern btn-blue" onclick="endTurn()">
+                <span>⏭️</span> Finir le tour
+            </button>
+        </div>
+
+        <div class="button-group-modern">
+            <button class="btn-modern btn-red" onclick="resetGame()">
+                <span>🔄</span> Nouvelle partie
+            </button>
+        </div>
+
+        <!-- Timeline Historique -->
+        <h2 style="margin-top:20px;">📜 Chroniques du Valhalla</h2>
+        <div class="timeline" id="historyContainer"></div>
+
+        <!-- Options avancées -->
+        <div class="advanced-panel">
+            <div style="display: flex; justify-content: center; margin-bottom:15px;">
+                <button class="btn-micro-modern" onclick="toggleAdvanced()">⚙️ Configurer la partie</button>
+            </div>
+            <div class="config-grid" id="advancedContent" style="display: none;">
+                <div class="config-item">
+                    <label>👾 Adversaires virtuels</label>
+                    <select id="playerCountSelect" onchange="updatePlayerCount()">
+                        <option value="1">1 seul (Ymir)</option>
+                        <option value="2" selected>2 légendes (Ymir + Fenrir)</option>
+                    </select>
+                </div>
+                <div class="config-item">
+                    <label>🎭 Personnalité d'Ymir</label>
+                    <select id="ymirPersonality" onchange="setPersonality('ymir', this.value)">
+                        <option value="aggressive" selected>Agressif 🗡️</option>
+                        <option value="defensive">Défensif 🛡️</option>
+                        <option value="opportunist">Opportuniste 💰</option>
+                        <option value="builder">Bâtisseur 🏗️</option>
+                    </select>
+                </div>
+                <div class="config-item">
+                    <label>🐺 Personnalité de Fenrir</label>
+                    <select id="fenrirPersonality" onchange="setPersonality('fenrir', this.value)">
+                        <option value="aggressive">Agressif 🗡️</option>
+                        <option value="defensive" selected>Défensif 🛡️</option>
+                        <option value="opportunist">Opportuniste 💰</option>
+                        <option value="builder">Bâtisseur 🏗️</option>
+                    </select>
+                </div>
+                <div class="config-item">
+                    <label>🏆 Seuil de victoire</label>
+                    <select id="victoryThreshold" onchange="updateVictoryThreshold()">
+                        <option value="20">20 PV (rapide)</option>
+                        <option value="30" selected>30 PV (standard)</option>
+                        <option value="40">40 PV (épique)</option>
+                    </select>
+                </div>
+                <div class="config-item">
+                    <label>📦 Pioche restante</label>
+                    <div style="background:rgba(255,215,0,0.2); padding:10px; border-radius:20px; text-align:center;">
+                        <span id="cardsRemaining">12</span> cartes
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message de fin -->
+        <div id="gameMessage"></div>
+
+        <footer>
+            ⚔️ Que le combat commence ! Ressources max 4 → ⭐ bonus quand réserve pleine.
+        </footer>
+    </div>
+
+    <script>
+        // ==================== ÉTAT DU JEU ====================
+        let gameState = {
+            player: { score: 0, gold: 0, beer: 0 },
+            ymir: { score: 0, gold: 0, beer: 0, personality: 'aggressive' },
+            fenrir: { score: 0, gold: 0, beer: 0, personality: 'defensive' },
+            
+            currentTurn: 1,
+            maxTurns: 8,
+            victoryThreshold: 30,
+            playerCount: 2,
+            gameActive: true,
+            activePlayer: 'player',
+            
+            eventDeck: [],
+            eventDiscard: [],
+            eventHistory: [],
+            
+            maxResources: 4
+        };
+
+        // ==================== ÉVÉNEMENTS ====================
+        const EVENTS = [
+            {
+                name: "Raid Massive",
+                icon: "⚔️",
+                effect: "Ymir gagne 1 PV et 1 ressource aléatoire. Fenrir gagne 1 ressource.",
+                execute: () => {
+                    gainResource('ymir', randomResource());
+                    adjustScore('ymir', 1);
+                    if (gameState.playerCount >= 2) gainResource('fenrir', randomResource());
+                    addHistory("Raid - Ressources pillées");
+                }
+            },
+            {
+                name: "Découverte d'un Filon",
+                icon: "💰",
+                effect: "Le joueur actif gagne 2 pièces d'or.",
+                execute: () => {
+                    gainResource(gameState.activePlayer, 'gold', 2);
+                    addHistory("Filon d'or ! +2 🪙 pour " + gameState.activePlayer);
+                }
+            },
+            {
+                name: "Récolte Exceptionnelle",
+                icon: "🍺",
+                effect: "Le joueur actif gagne 2 barils de bière.",
+                execute: () => {
+                    gainResource(gameState.activePlayer, 'beer', 2);
+                    addHistory("Récolte ! +2 🍺 pour " + gameState.activePlayer);
+                }
+            },
+            {
+                name: "Échange Commercial",
+                icon: "🔄",
+                effect: "Échangez 2 ressources d'un type contre 1 de l'autre.",
+                execute: () => {
+                    addHistory("Échange possible : 2 → 1");
+                }
+            },
+            {
+                name: "Construction",
+                icon: "🏗️",
+                effect: "Si vous avez 3+ pièces d'or, gagnez 2 PV. Sinon, gagnez 1 or.",
+                execute: () => {
+                    if (gameState.player.gold >= 3) {
+                        adjustScore('player', 2);
+                        addHistory("Construction réussie ! +2 PV");
+                    } else {
+                        gainResource('player', 'gold', 1);
+                        addHistory("Pas assez d'or, vous en gagnez 1");
+                    }
+                }
+            },
+            {
+                name: "Attaque Repoussée",
+                icon: "🛡️",
+                effect: "Le joueur défensif (si actif) gagne 1 PV et 1 ressource.",
+                execute: () => {
+                    if (gameState.activePlayer === 'ymir' && gameState.ymir.personality === 'defensive') {
+                        adjustScore('ymir', 1);
+                        gainResource('ymir', randomResource());
+                        addHistory("Ymir défensif contre-attaque !");
+                    } else if (gameState.activePlayer === 'fenrir' && gameState.fenrir.personality === 'defensive') {
+                        adjustScore('fenrir', 1);
+                        gainResource('fenrir', randomResource());
+                        addHistory("Fenrir défensif contre-attaque !");
+                    }
+                }
+            },
+            {
+                name: "Chasse de Fenrir",
+                icon: "🐺",
+                effect: "Fenrir gagne 1 PV par ressource qu'il a (max 3).",
+                execute: () => {
+                    if (gameState.playerCount >= 2) {
+                        let totalResources = gameState.fenrir.gold + gameState.fenrir.beer;
+                        let pv = Math.min(totalResources, 3);
+                        adjustScore('fenrir', pv);
+                        addHistory("Fenrir gagne " + pv + " PV (ressources)");
+                    }
+                }
+            },
+            {
+                name: "Colère d'Ymir",
+                icon: "👾",
+                effect: "Ymir agressif gagne 2 PV. Sinon, gagne 1 ressource.",
+                execute: () => {
+                    if (gameState.ymir.personality === 'aggressive') {
+                        adjustScore('ymir', 2);
+                        addHistory("Ymir agressif gagne 2 PV");
+                    } else {
+                        gainResource('ymir', randomResource());
+                        addHistory("Ymir gagne 1 ressource");
+                    }
+                }
+            },
+            {
+                name: "Bonus de Réserve",
+                icon: "💎",
+                effect: "Chaque joueur avec une ressource à 4 gagne 1 PV.",
+                execute: () => {
+                    if (gameState.player.gold === 4 || gameState.player.beer === 4) {
+                        adjustScore('player', 1);
+                        addHistory("Votre réserve pleine vous rapporte 1 PV");
+                    }
+                    if (gameState.ymir.gold === 4 || gameState.ymir.beer === 4) {
+                        adjustScore('ymir', 1);
+                        addHistory("Ymir bonus réserve");
+                    }
+                    if (gameState.playerCount >= 2 && (gameState.fenrir.gold === 4 || gameState.fenrir.beer === 4)) {
+                        adjustScore('fenrir', 1);
+                        addHistory("Fenrir bonus réserve");
+                    }
+                }
+            },
+            {
+                name: "Trêve",
+                icon: "🤝",
+                effect: "Personne ne gagne de PV. Échangez 2 ressources avec un adversaire.",
+                execute: () => {
+                    addHistory("Trêve - Échange possible");
+                }
+            },
+            {
+                name: "Inspiration Divine",
+                icon: "⚡",
+                effect: "Choisissez : 2 PV OU 2 ressources de chaque type.",
+                execute: () => {
+                    addHistory("Choisissez : 2 PV ou 2🪙+2🍺");
+                }
+            },
+            {
+                name: "Pillage",
+                icon: "💰",
+                effect: "Le joueur actif vole 1 ressource à chaque adversaire.",
+                execute: () => {
+                    if (gameState.activePlayer === 'player') {
+                        if (gameState.ymir.gold + gameState.ymir.beer > 0) {
+                            let resource = randomResourceFrom(gameState.ymir);
+                            gainResource('player', resource, 1);
+                            removeResource('ymir', resource, 1);
+                        }
+                        if (gameState.playerCount >= 2 && gameState.fenrir.gold + gameState.fenrir.beer > 0) {
+                            let resource = randomResourceFrom(gameState.fenrir);
+                            gainResource('player', resource, 1);
+                            removeResource('fenrir', resource, 1);
+                        }
+                        addHistory("Pillage réussi !");
+                    }
+                }
+            },
+            {
+                name: "Mission Secrète",
+                icon: "🏆",
+                effect: "Si vous avez plus de ressources que chaque adversaire, gagnez 3 PV.",
+                execute: () => {
+                    let playerTotal = gameState.player.gold + gameState.player.beer;
+                    let ymirTotal = gameState.ymir.gold + gameState.ymir.beer;
+                    let fenrirTotal = gameState.playerCount >= 2 ? gameState.fenrir.gold + gameState.fenrir.beer : 0;
+                    
+                    if (playerTotal > ymirTotal && (gameState.playerCount < 2 || playerTotal > fenrirTotal)) {
+                        adjustScore('player', 3);
+                        addHistory("Mission accomplie ! +3 PV");
+                    }
+                }
+            }
+        ];
+
+        // ==================== FONCTIONS RESSOURCES ====================
+        function randomResource() {
+            return Math.random() < 0.5 ? 'gold' : 'beer';
+        }
+
+        function randomResourceFrom(player) {
+            if (player.gold > 0 && player.beer > 0) {
+                return Math.random() < 0.5 ? 'gold' : 'beer';
+            } else if (player.gold > 0) {
+                return 'gold';
+            } else {
+                return 'beer';
+            }
+        }
+
+        function gainResource(player, type, amount = 1) {
+            if (!gameState[player]) return;
+            
+            let current = gameState[player][type];
+            let max = gameState.maxResources;
+            let newValue = Math.min(current + amount, max);
+            
+            if (current < max && newValue === max) {
+                adjustScore(player, 1);
+                addHistory(`${player} ⭐ Réserve de ${type} pleine ! +1 PV`);
+            }
+            
+            gameState[player][type] = newValue;
+            updateDisplay();
+        }
+
+        function removeResource(player, type, amount = 1) {
+            if (!gameState[player]) return;
+            gameState[player][type] = Math.max(0, gameState[player][type] - amount);
+            updateDisplay();
+        }
+
+        function addResource(player, type, amount) {
+            if (!gameState.gameActive && player !== 'player') return;
+            
+            if (amount > 0) {
+                gainResource(player, type, amount);
+            } else {
+                removeResource(player, type, -amount);
+            }
+        }
+
+        function adjustScore(player, amount) {
+            if (!gameState[player]) return;
+            gameState[player].score = Math.max(0, gameState[player].score + amount);
+            updateDisplay();
+            checkGameEnd();
+        }
+
+        // ==================== PERSONNALITÉS ====================
+        function setPersonality(player, personality) {
+            gameState[player].personality = personality;
+            document.getElementById(player + 'PersonalityTag').textContent = 
+                personality === 'aggressive' ? 'agressif' :
+                personality === 'defensive' ? 'défensif' :
+                personality === 'opportunist' ? 'opportuniste' : 'bâtisseur';
+            addHistory(`${player} devient ${personality}`);
+        }
+
+        // ==================== AFFICHAGE ====================
+        function updateDisplay() {
+            // Scores
+            document.getElementById('playerScore').textContent = gameState.player.score;
+            document.getElementById('ymirScore').textContent = gameState.ymir.score;
+            document.getElementById('fenrirScore').textContent = gameState.fenrir.score;
+            
+            // Ressources
+            document.getElementById('playerGold').textContent = gameState.player.gold;
+            document.getElementById('playerBeer').textContent = gameState.player.beer;
+            document.getElementById('ymirGold').textContent = gameState.ymir.gold;
+            document.getElementById('ymirBeer').textContent = gameState.ymir.beer;
+            document.getElementById('fenrirGold').textContent = gameState.fenrir.gold;
+            document.getElementById('fenrirBeer').textContent = gameState.fenrir.beer;
+            
+            // Barres de progression
+            document.getElementById('playerGoldFill').style.width = (gameState.player.gold / 4 * 100) + '%';
+            document.getElementById('playerBeerFill').style.width = (gameState.player.beer / 4 * 100) + '%';
+            document.getElementById('ymirGoldFill').style.width = (gameState.ymir.gold / 4 * 100) + '%';
+            document.getElementById('ymirBeerFill').style.width = (gameState.ymir.beer / 4 * 100) + '%';
+            document.getElementById('fenrirGoldFill').style.width = (gameState.fenrir.gold / 4 * 100) + '%';
+            document.getElementById('fenrirBeerFill').style.width = (gameState.fenrir.beer / 4 * 100) + '%';
+            
+            // Panneau actif
+            document.getElementById('panelPlayer').classList.remove('active');
+            document.getElementById('panelYmir').classList.remove('active');
+            document.getElementById('panelFenrir').classList.remove('active');
+            document.getElementById('panel' + gameState.activePlayer.charAt(0).toUpperCase() + gameState.activePlayer.slice(1)).classList.add('active');
+        }
+
+        // ==================== JEU ====================
+        function initDeck() {
+            gameState.eventDeck = [...EVENTS];
+            shuffleArray(gameState.eventDeck);
+            gameState.eventDiscard = [];
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function drawEvent() {
+            if (!gameState.gameActive) return;
+
+            if (gameState.eventDeck.length === 0) {
+                gameState.eventDeck = [...gameState.eventDiscard];
+                shuffleArray(gameState.eventDeck);
+                gameState.eventDiscard = [];
+            }
+
+            if (gameState.eventDeck.length > 0) {
+                const event = gameState.eventDeck.pop();
+                gameState.eventDiscard.push(event);
+                
+                document.getElementById('eventIcon').textContent = event.icon || '🎲';
+                document.getElementById('eventName').textContent = event.name;
+                document.getElementById('eventEffect').innerHTML = event.effect;
+                
+                event.execute();
+                
+                document.getElementById('cardsRemaining').textContent = gameState.eventDeck.length;
+            }
+        }
+
+        function endTurn() {
+            if (!gameState.gameActive) return;
+
+            const players = ['player', 'ymir', 'fenrir'].slice(0, gameState.playerCount + 1);
+            const currentIndex = players.indexOf(gameState.activePlayer);
+            const nextIndex = (currentIndex + 1) % players.length;
+            gameState.activePlayer = players[nextIndex];
+            
+            if (gameState.activePlayer === 'player') {
+                gameState.currentTurn++;
+                document.getElementById('currentTurn').textContent = gameState.currentTurn;
+                
+                if (gameState.playerCount >= 1) {
+                    gainResource('ymir', randomResource());
+                }
+                if (gameState.playerCount >= 2) {
+                    gainResource('fenrir', randomResource());
+                }
+                addHistory("Nouveau tour - Ressources produites");
+            }
+            
+            updateDisplay();
+            
+            if (gameState.currentTurn > gameState.maxTurns) {
+                gameState.gameActive = false;
+                document.getElementById('gameStatus').textContent = 'Terminé';
+                document.getElementById('gameStatus').className = 'game-status-badge';
+                checkGameEnd();
+                return;
+            }
+            
+            drawEvent();
+        }
+
+        // ==================== HISTORIQUE ====================
+        function addHistory(text) {
+            gameState.eventHistory.unshift({
+                turn: gameState.currentTurn,
+                player: gameState.activePlayer,
+                text: text
+            });
+            
+            if (gameState.eventHistory.length > 8) {
+                gameState.eventHistory.pop();
+            }
+            
+            const container = document.getElementById('historyContainer');
+            container.innerHTML = '';
+            gameState.eventHistory.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'timeline-item';
+                div.innerHTML = `<span class="timeline-turn">T${item.turn}</span> <span>${item.text}</span>`;
+                container.appendChild(div);
+            });
+        }
+
+        // ==================== FIN DE PARTIE ====================
+        function checkGameEnd() {
+            const messageContainer = document.getElementById('gameMessage');
+            
+            if (gameState.ymir.score >= gameState.victoryThreshold || 
+                (gameState.playerCount >= 2 && gameState.fenrir.score >= gameState.victoryThreshold)) {
+                
+                gameState.gameActive = false;
+                document.getElementById('gameStatus').textContent = 'Terminé';
+                
+                if (gameState.player.score >= gameState.ymir.score && 
+                    (gameState.playerCount < 2 || gameState.player.score >= gameState.fenrir.score)) {
+                    messageContainer.innerHTML = '<div class="victory-message-modern">🏆 VICTOIRE ! Le Valhalla vous accueille ! 🏆</div>';
+                } else {
+                    messageContainer.innerHTML = '<div class="defeat-message-modern">💀 DÉFAITE... Les clans ennemis règnent 💀</div>';
+                }
+            }
+            
+            else if (gameState.currentTurn > gameState.maxTurns) {
+                gameState.gameActive = false;
+                document.getElementById('gameStatus').textContent = 'Terminé';
+                
+                if (gameState.player.score >= gameState.ymir.score && 
+                    (gameState.playerCount < 2 || gameState.player.score >= gameState.fenrir.score)) {
+                    messageContainer.innerHTML = '<div class="victory-message-modern">🏆 VICTOIRE ! La gloire est vôtre ! 🏆</div>';
+                } else {
+                    messageContainer.innerHTML = '<div class="defeat-message-modern">💀 DÉFAITE... Le destin en a décidé autrement 💀</div>';
+                }
+            }
+        }
+
+        // ==================== OPTIONS ====================
+        function toggleAdvanced() {
+            const content = document.getElementById('advancedContent');
+            content.style.display = content.style.display === 'none' ? 'grid' : 'none';
+        }
+
+        function updatePlayerCount() {
+            gameState.playerCount = parseInt(document.getElementById('playerCountSelect').value);
+            document.getElementById('panelFenrir').style.display = 
+                gameState.playerCount >= 2 ? 'block' : 'none';
+            resetGame();
+        }
+
+        function updateVictoryThreshold() {
+            gameState.victoryThreshold = parseInt(document.getElementById('victoryThreshold').value);
+        }
+
+        // ==================== RESET ====================
+        function resetGame() {
+            gameState.player = { score: 0, gold: 0, beer: 0 };
+            gameState.ymir = { score: 0, gold: 0, beer: 0, personality: gameState.ymir.personality };
+            gameState.fenrir = { score: 0, gold: 0, beer: 0, personality: gameState.fenrir.personality };
+            
+            gameState.currentTurn = 1;
+            gameState.gameActive = true;
+            gameState.activePlayer = 'player';
+            
+            document.getElementById('currentTurn').textContent = '1';
+            document.getElementById('gameStatus').textContent = 'En cours';
+            document.getElementById('gameStatus').className = 'game-status-badge';
+            document.getElementById('gameMessage').innerHTML = '';
+            document.getElementById('eventIcon').textContent = '🎲';
+            document.getElementById('eventName').textContent = '-';
+            document.getElementById('eventEffect').innerHTML = 'Cliquez sur "Piocher un événement"';
+            
+            initDeck();
+            updateDisplay();
+            document.getElementById('cardsRemaining').textContent = gameState.eventDeck.length;
+            gameState.eventHistory = [];
+            document.getElementById('historyContainer').innerHTML = '';
+        }
+
+        // ==================== INIT ====================
+        window.onload = function() {
+            document.getElementById('ymirPersonalityTag').textContent = 'agressif';
+            document.getElementById('fenrirPersonalityTag').textContent = 'défensif';
+            document.getElementById('panelFenrir').style.display = 'block';
+            
+            initDeck();
+            resetGame();
+        };
+    </script>
+</body>
+</html>
